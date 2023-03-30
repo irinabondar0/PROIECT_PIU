@@ -5,15 +5,15 @@ namespace NivelStocareDate
 {
     public class AdministrareProduse_FisierText
     {
-        private const int NR_MAX_PRODUSE = 50;
-        private string evidenta_studenti;
+        private const int NR_MAX_PRODUSE = 35;
+        private string numeFisier;
 
-        public AdministrareProduse_FisierText(string evidenta_studenti)
+
+        public AdministrareProduse_FisierText(string numeFisier)
         {
-            this.evidenta_studenti = evidenta_studenti;
-            // se incearca deschiderea fisierului in modul OpenOrCreate
-            // astfel incat sa fie creat daca nu exista
-            Stream streamFisierText = File.Open(evidenta_studenti, FileMode.OpenOrCreate);
+            this.numeFisier = numeFisier;
+   
+            Stream streamFisierText = File.Open(numeFisier, FileMode.OpenOrCreate);
             streamFisierText.Close();
         }
 
@@ -22,7 +22,7 @@ namespace NivelStocareDate
             // instructiunea 'using' va apela la final streamWriterFisierText.Close();
             // al doilea parametru setat la 'true' al constructorului StreamWriter indica
             // modul 'append' de deschidere al fisierului
-            using (StreamWriter streamWriterFisierText = new StreamWriter(evidenta_studenti, true))
+            using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisier, true))
             {
                 streamWriterFisierText.WriteLine(produs.ConversieLaSir_PentruFisier());
             }
@@ -30,16 +30,12 @@ namespace NivelStocareDate
 
         public Produs[] GetProduse(out int nrProduse)
         {
-            Produs[] produse = new Produs[NR_MAX_PRODUSE];
+           Produs[] produse = new Produs[NR_MAX_PRODUSE];
 
-            // instructiunea 'using' va apela streamReader.Close()
-            using (StreamReader streamReader = new StreamReader(evidenta_studenti))
+            using (StreamReader streamReader = new StreamReader(numeFisier))
             {
                 string linieFisier;
                 nrProduse = 0;
-
-                // citeste cate o linie si creaza un obiect de tip Produs
-                // pe baza datelor din linia citita
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     produse[nrProduse++] = new Produs(linieFisier);
